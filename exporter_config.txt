@@ -1,0 +1,7 @@
+Quellpfad: ‪C:/Users/Tobias/Desktop/quelle/
+Zielpfad: ‪C:/Users/Tobias/Desktop/ziel/
+Wartezeit in Sekunden: 30
+
+!WICHTIG! Quell- und Zielpfad im folgenden Format angeben: ‪C:/Users/Test/quelle/ oder ‪C:/ziel/
+Der Pfadname darf keine "\" enthalten und muss am Schluss ein "/" stehen haben
+Die Wartezeit nur als Zahl angeben
