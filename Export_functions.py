@@ -16,7 +16,7 @@ def access(source):
     import os
     if os.path.exists(source):       # check if File existiert
         try:                           # check if file is opened
-            f = open(source, "w")    
+            f = open(source, "a+")    
             ergebnis = True            
             f.close() 
         except:
