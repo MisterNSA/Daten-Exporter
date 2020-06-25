@@ -1,7 +1,12 @@
-Quellpfad: ‪C:/Users/Tobias/Desktop/quelle/
-Zielpfad: ‪C:/Users/Tobias/Desktop/ziel/
+Quellpfad: M:/z-transfer/Rechnung-Import/
+Zielpfad: C:/Users/t.weber/Desktop/ziel/
+Zielpfad, falls falscher Dateityp: C:/Users/t.weber/Desktop/zielWrong/
 Wartezeit in Sekunden: 30
+Endug der gewünschten Dateityps: .pdf
 
-!WICHTIG! Quell- und Zielpfad im folgenden Format angeben: ‪C:/Users/Test/quelle/ oder ‪C:/ziel/
+!WICHTIG!
+Nach dem Doppelpunkt muss immer ein Zeichen Platz sein. 
+Quell- und Zielpfad im folgenden Format angeben: C:/Users/Test/quelle/ oder C:/ziel/
 Der Pfadname darf keine "\" enthalten und muss am Schluss ein "/" stehen haben
-Die Wartezeit nur als Zahl angeben
+Die Wartezeit nur als Zahl angeben.
+Die Endung im Format z.B: .pdf .py .exe .docx 
