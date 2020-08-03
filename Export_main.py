@@ -1,59 +1,56 @@
+#*******************************************************************************************************************#
+# A Servie that checks if a folder contains files and moves them to a specifig folder, depending on the filetype    #
+# Creator: MisterNSA aka Tobias Dominik Weber                                                                       #
+# Date: 03.08.2020 Version 0.7                                                                                      #
+#-------------------------------------------------------------------------------------------------------------------#
+
 import shutil
 import os
 import Export_functions as func
 import time
+import configparser 
 
 
-# Extract the Settings from the exporter_config.txt File
 def checkSettings():
-    counter = 0
     try:
-        data_source = open("exporter_config.txt", "r") 
-        for i in data_source:  
-            counter += 1
-            if counter == 1:
-                source = i # source of Files
-                source = source.lstrip("Quellpfad: â€ª ") #extract only valid Information
-                source = source.strip()
-            if counter == 2:
-                destination = i # Destination for Files that match the format
-                destination = destination.lstrip("Zielpfad: â€ª ") #extract only valid Information
-                destination = destination.strip()
-            if counter == 3:
-                wrongDestination = i # Destination for Files that dont match the format
-                wrongDestination = wrongDestination.lstrip("Zielpfad, falls falscher Dateityp: â€ª ") #extract only valid Information
-                wrongDestination = wrongDestination.strip()
-            if counter == 4:
-                wait = i # Time to wait after each loop
-                wait = int(wait.lstrip("Wartezeit in Sekunden: ")) #extract only valid time
-            if counter == 5:
-                fileType = i # The ending to check if the File has the right Type
-                fileType = fileType.lstrip("Endug der gewünschten Dateityps: ") #extract only valid Information
-                fileType = fileType.strip()
-            if counter > 5:
-                break
-        data_source.close()
-        main(source, destination, wait, wrongDestination, fileType)
+        # Extract the Settings from the exporter_config.txt File
+        config = configparser.ConfigParser()
+        configfilepath = "exporter_config.txt"
+        config.read(configfilepath)
+
+        # Parse Paths
+        Pfade_config = config["Pfade"]
+        source = Pfade_config.get("Quellpfad")
+        destination = Pfade_config.get("Zielpfad")
+        wrong_destination = Pfade_config.get("Zielpfad, falls falscher Dateityp")
+
+        # Parse the Timer
+        Timer_config = config["Timer"]
+        wait = int(Timer_config.get("Wartezeit in Sekunden"))
+
+        # Parse the Datatype
+        Datentyp_config = config["Datentypen"]
+        fileType = Datentyp_config["Endug des Dateityps"]
+            
+        main(source, destination, wait, wrong_destination, fileType)
             
     except FileNotFoundError: # create new config.txt
         file = open("exporter_config.txt", "w")
-        file.write("Quellpfad: ")
-        file.write("Zielpfad: ")
-        file.write("Zielpfad, falls falscher Dateityp: ")
-        file.write("Wartezeit in Sekunden: ")
-        file.write("Endug des gewünschten Dateityps: " + "\n")
-        file.write("""!WICHTIG!
-Nach dem Doppelpunkt muss immer ein Zeichen Platz sein. 
-Quell- und Zielpfad im folgenden Format angeben: C:/Users/Test/quelle/ oder C:/ziel/
-Der Pfadname darf keine "\" enthalten und muss am Schluss ein "/" stehen haben
-Die Wartezeit nur als Zahl angeben.
-Die Endung im Format z.B: .pdf .py .exe .docx """)
+        file.write("""
+        [Pfade]
+        Quellpfad = M:/z-transfer/Rechnung-Import/
+        Zielpfad = C:/Users/t.weber/Desktop/ziel/
+        Zielpfad, falls falscher Dateityp = C:/Users/t.weber/Desktop/zielWrong/
+        [Timer]
+        Wartezeit in Sekunden = 30
+        [Datentypen]
+        Endug des gewünschten Dateityps = .pdf""")
         file.close()
         time.sleep(300) # wait 5 Minutes for the User to Input settings
         checkSettings()
 
 
-def main(source, destination, wait, wrongDestination, fileType):
+def main(source, destination, wait, wrong_destination, fileType):
     try:
         for filename in os.listdir(source): 
             filesource = source + filename
@@ -61,7 +58,7 @@ def main(source, destination, wait, wrongDestination, fileType):
                 if func.isType(filename, fileType) == True: # check if the File has the right type
                     shutil.move(filesource, destination)
                 else:
-                    shutil.move(filesource, wrongDestination)
+                    shutil.move(filesource, wrong_destination)
 
             else:
                 continue
