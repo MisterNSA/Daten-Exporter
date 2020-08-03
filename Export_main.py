@@ -41,7 +41,7 @@ def checkSettings():
         file.write("Zielpfad: ")
         file.write("Zielpfad, falls falscher Dateityp: ")
         file.write("Wartezeit in Sekunden: ")
-        file.write("Endug der gewünschten Dateityps: " + "\n")
+        file.write("Endug des gewünschten Dateityps: " + "\n")
         file.write("""!WICHTIG!
 Nach dem Doppelpunkt muss immer ein Zeichen Platz sein. 
 Quell- und Zielpfad im folgenden Format angeben: C:/Users/Test/quelle/ oder C:/ziel/
