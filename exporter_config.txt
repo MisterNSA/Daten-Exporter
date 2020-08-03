@@ -2,7 +2,7 @@ Quellpfad: M:/z-transfer/Rechnung-Import/
 Zielpfad: C:/Users/t.weber/Desktop/ziel/
 Zielpfad, falls falscher Dateityp: C:/Users/t.weber/Desktop/zielWrong/
 Wartezeit in Sekunden: 30
-Endug der gewünschten Dateityps: .pdf
+Endug des gewünschten Dateityps: .pdf
 
 !WICHTIG!
 Nach dem Doppelpunkt muss immer ein Zeichen Platz sein. 
