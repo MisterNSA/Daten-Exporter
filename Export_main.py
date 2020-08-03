@@ -6,6 +6,7 @@
 
 import shutil
 import os
+import sys
 import Export_functions as func
 import time
 import configparser 
@@ -34,20 +35,18 @@ def checkSettings():
             
         main(source, destination, wait, wrong_destination, fileType)
             
-    except FileNotFoundError: # create new config.txt
+    except: # create new config.txt
         file = open("exporter_config.txt", "w")
-        file.write("""
-        [Pfade]
-        Quellpfad = M:/z-transfer/Rechnung-Import/
-        Zielpfad = C:/Users/t.weber/Desktop/ziel/
-        Zielpfad, falls falscher Dateityp = C:/Users/t.weber/Desktop/zielWrong/
-        [Timer]
-        Wartezeit in Sekunden = 30
-        [Datentypen]
-        Endug des gewünschten Dateityps = .pdf""")
+        file.write("""[Pfade]
+Quellpfad = 
+Zielpfad = 
+Zielpfad, falls falscher Dateityp = 
+[Timer]
+Wartezeit in Sekunden = 
+[Datentypen]
+Endug des Dateityps = .pdf""")
         file.close()
-        time.sleep(300) # wait 5 Minutes for the User to Input settings
-        checkSettings()
+        sys.exit(0)
 
 
 def main(source, destination, wait, wrong_destination, fileType):
