@@ -62,7 +62,11 @@ def main(source, destination, wait, wrong_destination, fileType):
             else:
                 continue
     except FileNotFoundError: # send Mail with Error 
-        func.mail() #WIP
+        pass
+        #func.mail() #WIP
+
+    except: # In Case of another error
+        pass # Add another Errormessage and send it per mail
     
     time.sleep(wait) #Wait x Seconds, befor a new loop
     checkSettings()
