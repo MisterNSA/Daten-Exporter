@@ -1,6 +1,6 @@
-#Funktionlibrary for the Exporter
-#Creator: Tobias Dominik Weber
-#Date: 15.06.2020 Versin 0.9
+# Funktionlibrary for the Exporter
+# Creator: Tobias Dominik Weber
+# Date: 15.06.2020 Versin 0.9
 
 
 # check if the File matches the Type from the config
@@ -8,44 +8,40 @@ def isType(source, fileType):
     if fileType in source:
         return True
     else:
-        return False 
+        return False
 
 
-# check if the File exists and isnt open 
-def access(source): 
+# check if the File exists and isnt open
+def access(source):
     import os
     if os.path.exists(source):       # check if File existiert
         try:                           # check if file is opened
-            f = open(source, "a+")    
-            ergebnis = True            
-            f.close() 
+            f = open(source, "a+")
+            ergebnis = True
+            f.close()
         except:
             ergebnis = False
         finally:
             return ergebnis
 
 
-def mail():
-    pass # WORK IN PROGRESS
-    """
+# sends a Mail with an error mesage to the user
+def mail(error_message):
     import smtplib
-    from email.MIMEMultipart import MIMEMultipart
-    from email.MIMEText import MIMEText
+    import datetime
+    now = datetime.datetime.now()
+    # SMTP Server and Port
+    connectionObject = smtplib.SMTP("smtp.gmail.com", 587)
+    # connect to SMTP
+    connectionObject.ehlo()
+    # Beginn Encryption
+    connectionObject.starttls()
+    # Login to your Account
+    connectionObject.login('tobiasdominikweber@gmail.com', 'Tobias1029')
+    # From, To, Subject \n\n Text
+    connectionObject.sendmail("tobiasdominikweber@gmail.com", "tobiasdominikweber@gmail.com",
+                              f"Subject: An Error Occured\n\n {now} \n {error_message} ")
+    # Disconnect
+    connectionObject.quit()
 
-    senderEmail = "tobiasweber1029@googlemail.com"
-    empfangsEmail = "tobiasweber1029@googlemail.com"
-    msg = MIMEMultipart()
-    msg["From"] = senderEmail
-    msg["To"] = empfangsEmail
-    msg["Subject"] = "Es ist ein Fehler aufgetreten"
-
-    #emailText = "Das Programm wurde unerwartet beendet. Bitte neu starten!"
-    #msg.attach(MIMEText(emailText, "html"))
-
-    server = smtplib.SMTP("mail.google.net", 993) # Die Server Daten
-    server.starttls()
-    server.login(senderEmail, "tobiasdominiki") # Das Passwort
-    text = msg.as_string()
-    server.sendmail(senderEmail, empfangsEmail, text)
-    server.quit()
-    """
+    # Maybe add: App Specific Passwort - Eigenes PW für Programme
