@@ -1,7 +1,7 @@
 #*******************************************************************************************************************#
 # A Servie that checks if a folder contains files and moves them to a specifig folder, depending on the filetype    #
 # Creator: MisterNSA aka Tobias Dominik Weber                                                                       #
-# Date: 03.08.2020 Version 0.7                                                                                      #
+# Date: 05.08.2020 Version 0.8                                                                                      #
 #-------------------------------------------------------------------------------------------------------------------#
 
 import shutil
@@ -9,7 +9,7 @@ import os
 import sys
 import Export_functions as func
 import time
-import configparser 
+import configparser
 
 
 def checkSettings():
@@ -23,7 +23,8 @@ def checkSettings():
         Pfade_config = config["Pfade"]
         source = Pfade_config.get("Quellpfad")
         destination = Pfade_config.get("Zielpfad")
-        wrong_destination = Pfade_config.get("Zielpfad, falls falscher Dateityp")
+        wrong_destination = Pfade_config.get(
+            "Zielpfad, falls falscher Dateityp")
 
         # Parse the Timer
         Timer_config = config["Timer"]
@@ -32,10 +33,10 @@ def checkSettings():
         # Parse the Datatype
         Datentyp_config = config["Datentypen"]
         fileType = Datentyp_config["Endug des Dateityps"]
-            
+
         main(source, destination, wait, wrong_destination, fileType)
-            
-    except: # create new config.txt
+
+    except:  # create new config.txt
         file = open("exporter_config.txt", "w")
         file.write("""[Pfade]
 Quellpfad = 
@@ -51,30 +52,32 @@ Endug des Dateityps = .pdf""")
 
 def main(source, destination, wait, wrong_destination, fileType):
     try:
-        for filename in os.listdir(source): 
+        for filename in os.listdir(source):
             filesource = source + filename
-            if func.access(filesource) == True: # check if the file exists and isnt opened
-                if func.isType(filename, fileType) == True: # check if the File has the right type
+            # check if the file exists and isnt opened
+            if func.access(filesource) == True:
+                # check if the File has the right type
+                if func.isType(filename, fileType) == True:
                     shutil.move(filesource, destination)
                 else:
                     shutil.move(filesource, wrong_destination)
 
             else:
                 continue
-    except FileNotFoundError: # send Mail with Error 
-        pass
-        #func.mail() #WIP
+    # If an error occured, send mail with error to user
+    except FileNotFoundError:
+        func.mail(
+            "A File in the Folder was not found. Someone seems to modify the Data.")
 
-    except: # In Case of another error
-        pass # Add another Errormessage and send it per mail
-    
-    time.sleep(wait) #Wait x Seconds, befor a new loop
+    except RuntimeError:
+        func.mail(RuntimeError)
+
+    time.sleep(wait)  # Wait x seconds, befor a new loop
     checkSettings()
 
 
 if __name__ == "__main__":
     checkSettings()
 
-
-
-
+# Whatever happens, that ends the programm, inform the user
+func.mail("The Programm stopped running!")
