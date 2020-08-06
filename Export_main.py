@@ -1,7 +1,7 @@
 #*******************************************************************************************************************#
 # A Servie that checks if a folder contains files and moves them to a specifig folder, depending on the filetype    #
 # Creator: MisterNSA aka Tobias Dominik Weber                                                                       #
-# Date: 05.08.2020 Version 0.8                                                                                      #
+# Date: 06.08.2020 Version 0.8                                                                                      #
 #-------------------------------------------------------------------------------------------------------------------#
 
 import shutil
@@ -25,6 +25,7 @@ def checkSettings():
         destination = Pfade_config.get("Zielpfad")
         wrong_destination = Pfade_config.get(
             "Zielpfad, falls falscher Dateityp")
+        duplicate_destination = Pfade_config.get("Zielpfad, falls Datei schon existiert")
 
         # Parse the Timer
         Timer_config = config["Timer"]
@@ -34,7 +35,7 @@ def checkSettings():
         Datentyp_config = config["Datentypen"]
         fileType = Datentyp_config["Endug des Dateityps"]
 
-        main(source, destination, wait, wrong_destination, fileType)
+        main(source, destination, wait, wrong_destination, fileType, duplicate_destination)
 
     except:  # create new config.txt
         file = open("exporter_config.txt", "w")
@@ -42,6 +43,7 @@ def checkSettings():
 Quellpfad = 
 Zielpfad = 
 Zielpfad, falls falscher Dateityp = 
+Zielpfad, falls Datei schon existiert =
 [Timer]
 Wartezeit in Sekunden = 
 [Datentypen]
@@ -50,7 +52,7 @@ Endug des Dateityps = .pdf""")
         sys.exit(0)
 
 
-def main(source, destination, wait, wrong_destination, fileType):
+def main(source, destination, wait, wrong_destination, fileType, duplicate_destination):
     try:
         for filename in os.listdir(source):
             filesource = source + filename
@@ -58,9 +60,16 @@ def main(source, destination, wait, wrong_destination, fileType):
             if func.access(filesource) == True:
                 # check if the File has the right type
                 if func.isType(filename, fileType) == True:
-                    shutil.move(filesource, destination)
+                    # Check if file is a duplicate
+                    if filename in os.listdir(destination):
+                        shutil.move(filesource, duplicate_destination)
+                    else:
+                        shutil.move(filesource, destination)
                 else:
-                    shutil.move(filesource, wrong_destination)
+                    if filename in os.listdir(wrong_destination):
+                        shutil.move(filesource, duplicate_destination)
+                    else:
+                        shutil.move(filesource, wrong_destination)
 
             else:
                 continue
@@ -74,11 +83,11 @@ def main(source, destination, wait, wrong_destination, fileType):
         func.mail(RuntimeError)
 
     time.sleep(wait)  # Wait x seconds, befor a new loop
-    main(source, destination, wait, wrong_destination, fileType)
+    main(source, destination, wait, wrong_destination, fileType, duplicate_destination)
 
 
 if __name__ == "__main__":
     checkSettings()
 
-# Whatever happens, that ends the programm, inform the user
+# Whatever happens, that ends, duplicate_destination the programm, inform the user
 func.mail("The Programm stopped running!")
