@@ -1,10 +1,9 @@
 [Pfade]
-Quellpfad = M:/z-transfer/Rechnung-Import/
+Quellpfad = C:/Users/t.weber/Desktop/source/
 Zielpfad = C:/Users/t.weber/Desktop/ziel/
 Zielpfad, falls falscher Dateityp = C:/Users/t.weber/Desktop/zielWrong/
+Zielpfad, falls Datei schon existiert = C:/Users/t.weber/Desktop/duplicates/
 [Timer]
-Wartezeit in Sekunden = 30
+Wartezeit in Sekunden = 15
 [Datentypen]
 Endug des Dateityps = .pdf
-
-
