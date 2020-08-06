@@ -69,11 +69,12 @@ def main(source, destination, wait, wrong_destination, fileType):
         func.mail(
             "A File in the Folder was not found. Someone seems to modify the Data.")
 
+
     except RuntimeError:
         func.mail(RuntimeError)
 
     time.sleep(wait)  # Wait x seconds, befor a new loop
-    checkSettings()
+    main(source, destination, wait, wrong_destination, fileType)
 
 
 if __name__ == "__main__":
