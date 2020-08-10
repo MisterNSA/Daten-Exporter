@@ -25,11 +25,9 @@ def access(source):
             return ergebnis
 
 
-# sends a Mail with an error mesage to the user
+# sends a Mail with an error message to the user
 def mail(error_message):
     import smtplib
-    import datetime
-    now = datetime.datetime.now()
     # SMTP Server and Port
     connectionObject = smtplib.SMTP("ccb-mail-12")
     # connect to SMTP
@@ -37,11 +35,19 @@ def mail(error_message):
     # Beginn Encryption
     connectionObject.starttls()
     # Login to your Account: USER | PW
-    connectionObject.login("t.weber@ccb.local", "")
+    connectionObject.login("t.weber@ccb.local", "!")
     # From, To, Subject \n\n Text
     connectionObject.sendmail("t.weber@ccb.de", "t.weber@ccb.de",
-                              f"Subject: An Error Occured\n\n {now} \n {error_message} ")
+                              f"Subject: An Error Occured\n\n Datum: {getTime()} \n {error_message} ")
     # Disconnect
     connectionObject.quit()
+
+def getTime():
+    from datetime import datetime
+    now = datetime.now()
+    # Extract Date and Time
+    return now.strftime("%Y.%m.%d - %H:%M:%S")
+
+mail("Dies ist eine Testmail")
 
 
