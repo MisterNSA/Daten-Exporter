@@ -1,7 +1,7 @@
 #*******************************************************************************************************************#
 # A Servie that checks if a folder contains files and moves them to a specifig folder, depending on the filetype    #
 # Creator: MisterNSA aka Tobias Dominik Weber                                                                       #
-# Date: 06.08.2020 Version 0.8                                                                                      #
+# Date: 10.08.2020 Version 0.8                                                                                      #
 #-------------------------------------------------------------------------------------------------------------------#
 
 import shutil
@@ -51,7 +51,7 @@ Endug des Dateityps = .pdf""")
         file.close()
         sys.exit(0)
 
-
+# Main Loop - Checks what criterias the File meets and moves it to the corresponding path
 def main(source, destination, wait, wrong_destination, fileType, duplicate_destination):
     try:
         for filename in os.listdir(source):
@@ -78,7 +78,6 @@ def main(source, destination, wait, wrong_destination, fileType, duplicate_desti
         func.mail(
             "A File in the Folder was not found. Someone seems to modify the Data.")
 
-
     except RuntimeError:
         func.mail(RuntimeError)
 
@@ -89,5 +88,5 @@ def main(source, destination, wait, wrong_destination, fileType, duplicate_desti
 if __name__ == "__main__":
     checkSettings()
 
-# Whatever happens, that ends, duplicate_destination the programm, inform the user
+# Whatever happens, that ends the programm, inform the user
 func.mail("The Programm stopped running!")
