@@ -1,7 +1,7 @@
 #*******************************************************************************************************************#
 # A Servie that checks if a folder contains files and moves them to a specifig folder, depending on the filetype    #
 # Creator: MisterNSA aka Tobias Dominik Weber                                                                       #
-# Date: 11.08.2020 Version 0.8.5                                                                                    #
+# Date: 10.08.2020 Version 0.9                                                                                      #
 #-------------------------------------------------------------------------------------------------------------------#
 
 import shutil
@@ -35,8 +35,6 @@ def checkSettings():
         Datentyp_config = config["Datentypen"]
         fileType = Datentyp_config["Endug des Dateityps"]
 
-        main(source, destination, wait, wrong_destination, fileType, duplicate_destination)
-
     except:  # create new config.txt
         file = open("exporter_config.txt", "w")
         file.write("""[Pfade]
@@ -49,8 +47,12 @@ Wartezeit in Sekunden =
 [Datentypen]
 Endug des Dateityps = .pdf""")
         file.close()
-        func.mail("Entweder war die config leer, ein Dateipfad korrupiert oder die config wurde inkorrekt geändert. Es wurde eine neue config erstellt und der Diesnst beendet.")
+        func.mail("Entweder war die config leer, ein Dateipfad korrupiert oder die config wurde inkorrekt geaendert. Es wurde eine neue config erstellt und der Dienst beendet.")
         sys.exit(0)
+
+    main(source, destination, wait, wrong_destination, fileType, duplicate_destination)
+
+
 
 # Main Loop - Checks what criterias the File meets and moves it to the corresponding path
 def main(source, destination, wait, wrong_destination, fileType, duplicate_destination):
@@ -69,20 +71,30 @@ def main(source, destination, wait, wrong_destination, fileType, duplicate_desti
                         shutil.move(filesource, (destination/filename))
                 else:
                     if filename in os.listdir(wrong_destination):
-                        print(duplicate_destination/filename)
                         shutil.move(filesource, (duplicate_destination/filename))
                     else:
                         shutil.move(filesource, (wrong_destination/filename))
 
             else:
                 continue
+                
     # If an error occured, send mail with error to user
     except FileNotFoundError:
-        func.mail(
-            "A File, that was in the Folder a Second ago, was not found. Someone seems to modify the Data.")
+        message = f"""Entweder wurde ein Pfad nicht richtig eingelesen oder eine Datei wurde waehrend der Bearbeitung verschoben, was aber unwahrscheinlich ist.\n
+Pfade:\n
+Quellpfad = {source}\n
+Zielpfad = {destination}\n
+Zielpfad, falls falscher Dateityp = {wrong_destination}\n
+Zielpfad, falls Datei schon existiert = {duplicate_destination}\n\n
+Wenn es Fehler in der Pfadangabe gibt, versuchen Sie bitte den Pfad in der config zu loeschen und per Hand neu einzutragen.\n
+Falls auch dies nichts bringt, loeschen sie bitte die config. Beim naechsten Programmstart wird automatisch eine neue config erstellt.
+"""
+        func.mail(message)
+        sys.exit(0)
 
     except RuntimeError:
         func.mail(RuntimeError)
+        sys.exit(0)
 
     time.sleep(wait)  # Wait x seconds, befor a new loop
     main(source, destination, wait, wrong_destination, fileType, duplicate_destination)
@@ -92,4 +104,4 @@ if __name__ == "__main__":
     checkSettings()
 
 # Whatever happens, that ends the programm, inform the user
-func.mail("The Programm stopped running!")
+func.mail("The Programm stopped running for whatever reason!")
