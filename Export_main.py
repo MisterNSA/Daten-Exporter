@@ -1,7 +1,7 @@
 #*******************************************************************************************************************#
 # A Servie that checks if a folder contains files and moves them to a specifig folder, depending on the filetype    #
 # Creator: MisterNSA aka Tobias Dominik Weber                                                                       #
-# Date: 10.08.2020 Version 0.8                                                                                      #
+# Date: 11.08.2020 Version 0.8.5                                                                                    #
 #-------------------------------------------------------------------------------------------------------------------#
 
 import shutil
@@ -10,6 +10,7 @@ import sys
 import Export_functions as func
 import time
 import configparser
+from pathlib import Path
 
 
 def checkSettings():
@@ -21,11 +22,10 @@ def checkSettings():
 
         # Parse Paths
         Pfade_config = config["Pfade"]
-        source = Pfade_config.get("Quellpfad")
-        destination = Pfade_config.get("Zielpfad")
-        wrong_destination = Pfade_config.get(
-            "Zielpfad, falls falscher Dateityp")
-        duplicate_destination = Pfade_config.get("Zielpfad, falls Datei schon existiert")
+        source : Path = Path(Pfade_config.get("Quellpfad"))
+        destination : Path = Path(Pfade_config.get("Zielpfad"))
+        wrong_destination : Path = Path(Pfade_config.get("Zielpfad, falls falscher Dateityp"))
+        duplicate_destination : Path = Path(Pfade_config.get("Zielpfad, falls Datei schon existiert"))
 
         # Parse the Timer
         Timer_config = config["Timer"]
@@ -49,34 +49,37 @@ Wartezeit in Sekunden =
 [Datentypen]
 Endug des Dateityps = .pdf""")
         file.close()
+        func.mail("Entweder war die config leer, ein Dateipfad korrupiert oder die config wurde inkorrekt geändert. Es wurde eine neue config erstellt und der Diesnst beendet.")
         sys.exit(0)
 
 # Main Loop - Checks what criterias the File meets and moves it to the corresponding path
 def main(source, destination, wait, wrong_destination, fileType, duplicate_destination):
     try:
         for filename in os.listdir(source):
-            filesource = source + filename
+            # pathlib adds a String builder. Instead of "+", you can use "/"
+            filesource = (source/filename)
             # check if the file exists and isnt opened
             if func.access(filesource) == True:
                 # check if the File has the right type
                 if func.isType(filename, fileType) == True:
                     # Check if file is a duplicate
                     if filename in os.listdir(destination):
-                        shutil.move(filesource, duplicate_destination)
+                        shutil.move(filesource, (duplicate_destination/filename))
                     else:
-                        shutil.move(filesource, destination)
+                        shutil.move(filesource, (destination/filename))
                 else:
                     if filename in os.listdir(wrong_destination):
-                        shutil.move(filesource, duplicate_destination)
+                        print(duplicate_destination/filename)
+                        shutil.move(filesource, (duplicate_destination/filename))
                     else:
-                        shutil.move(filesource, wrong_destination)
+                        shutil.move(filesource, (wrong_destination/filename))
 
             else:
                 continue
     # If an error occured, send mail with error to user
     except FileNotFoundError:
         func.mail(
-            "A File in the Folder was not found. Someone seems to modify the Data.")
+            "A File, that was in the Folder a Second ago, was not found. Someone seems to modify the Data.")
 
     except RuntimeError:
         func.mail(RuntimeError)
