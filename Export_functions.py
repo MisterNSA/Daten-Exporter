@@ -1,7 +1,6 @@
 # Funktionlibrary for the Exporter
 # Creator: Tobias Dominik Weber
-# Date: 10.08.2020 Version 0.9.1
-
+# Date: 17.08.2020 Version 0.9.2
 
 # check if the File matches the Type from the config
 def isType(source, fileType):
@@ -26,18 +25,18 @@ def access(source):
 
 
 # sends a Mail with an error message to the user
-def mail(error_message):
+def mail(error_message, Address_sender, Password_sender, Address_receiver, Smtp_server):
     import smtplib
     # SMTP Server and Port
-    connectionObject = smtplib.SMTP("ccb-mail-12")
+    connectionObject = smtplib.SMTP(Smtp_server)
     # connect to SMTP
     connectionObject.ehlo()
     # Beginn Encryption
     connectionObject.starttls()
     # Login to your Account: USER | PW
-    connectionObject.login("t.weber@ccb.local", "!")
+    connectionObject.login(Address_sender, Password_sender)
     # From, To, Subject \n\n Text
-    connectionObject.sendmail("t.weber@ccb.de", "t.weber@ccb.de",
+    connectionObject.sendmail(Address_sender, Address_receiver,
                               f"Subject: An Error Occured\n\n Datum: {getTime()} \n {error_message} ")
     # Disconnect
     connectionObject.quit()
@@ -47,7 +46,4 @@ def getTime():
     now = datetime.now()
     # Extract Date and Time
     return now.strftime("%Y.%m.%d - %H:%M:%S")
-
-mail("Dies ist eine Testmail")
-
 
