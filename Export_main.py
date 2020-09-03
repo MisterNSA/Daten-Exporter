@@ -1,7 +1,7 @@
 #*******************************************************************************************************************#
 # A Servie that checks if a folder contains files and moves them to a specifig folder, depending on the filetype    #
 # Creator: MisterNSA aka Tobias Dominik Weber                                                                       #
-# Date: 10.08.2020 Version 0.9                                                                                      #
+# Date: 03.09.2020 Version 1.0                                                                                      #
 #-------------------------------------------------------------------------------------------------------------------#
 
 import shutil
@@ -14,6 +14,7 @@ from pathlib import Path
 
 
 def checkSettings():
+    """Reads the settings from the config file"""
     try:
         # Extract the Settings from the exporter_config.txt File
         config = configparser.ConfigParser()
@@ -40,8 +41,8 @@ def checkSettings():
 
 
     except:  # create new config.txt
-        file = open("exporter_config.txt", "w")
-        file.write("""[Pfade]
+        with open("exporter_config.txt", "w") as file:
+            file.write("""[Pfade]
 Quellpfad = 
 Zielpfad = 
 Zielpfad, falls falscher Dateityp = 
@@ -51,24 +52,22 @@ Wartezeit in Sekunden =
 [Datentypen]
 Endugen des Dateityps = .pdf, .jpg, .png
 #Bitte alle Dateiendungen durch ein Komma gefolgt von einem Lehrzeichen trennen. Z.B.  .pdf, .jpg, .png""")
-        file.close()
         func.mail("Entweder war die config leer, ein Dateipfad korrupiert oder die config wurde inkorrekt geaendert. Es wurde eine neue config erstellt und der Dienst beendet.")
         sys.exit(0)
 
     main(source, destination, wait, wrong_destination, fileType, duplicate_destination)
 
 
-
-# Main Loop - Checks what criterias the File meets and moves it to the corresponding path
 def main(source, destination, wait, wrong_destination, fileType, duplicate_destination):
+    """Main Loop - Checks what criterias the File meets and moves it to the corresponding path"""
     try:
         for filename in os.listdir(source):
             # pathlib adds a String builder. Instead of "+", you can use "/"
             filesource = (source/filename)
             # check if the file exists and isnt opened
             if func.access(filesource) == True:
-                # check if the File has the right type
-                if func.isType(filename, fileType) == True:
+                # check if the File has the right type and starts with a number
+                if func.isType(filename, fileType) and func.Starts_with_Number(filename):
                     # Check if file is a duplicate
                     if filename in os.listdir(destination):
                         shutil.move(filesource, (duplicate_destination/filename))
