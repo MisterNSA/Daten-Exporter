@@ -4,7 +4,7 @@
 
 # check if the File matches the Type from the config
 def isType(source, fileType):
-    if fileType in source:
+    if any(ending in source for ending in fileType):
         return True
     else:
         return False
