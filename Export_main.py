@@ -33,7 +33,11 @@ def checkSettings():
 
         # Parse the Datatype
         Datentyp_config = config["Datentypen"]
-        fileType = Datentyp_config["Endug des Dateityps"]
+        #fileType = Datentyp_config["Endug des Dateityps"]
+
+
+        fileType = Datentyp_config["Endugen des Dateityps"].split(", ")
+
 
     except:  # create new config.txt
         file = open("exporter_config.txt", "w")
@@ -41,11 +45,12 @@ def checkSettings():
 Quellpfad = 
 Zielpfad = 
 Zielpfad, falls falscher Dateityp = 
-Zielpfad, falls Datei schon existiert =
+Zielpfad, falls Datei schon existiert = 
 [Timer]
 Wartezeit in Sekunden = 
 [Datentypen]
-Endug des Dateityps = .pdf""")
+Endugen des Dateityps = .pdf, .jpg, .png
+#Bitte alle Dateiendungen durch ein Komma gefolgt von einem Lehrzeichen trennen. Z.B.  .pdf, .jpg, .png""")
         file.close()
         func.mail("Entweder war die config leer, ein Dateipfad korrupiert oder die config wurde inkorrekt geaendert. Es wurde eine neue config erstellt und der Dienst beendet.")
         sys.exit(0)
