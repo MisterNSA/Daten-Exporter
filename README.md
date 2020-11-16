@@ -12,7 +12,7 @@ Verschiedene Ziele,
 
 #Merkmale nach denen Geordnet werden kann
 
-**-Dateityp/ -endung**
+** -Dateityp/ -endung**
 
 # Inhalt der config
 1. Quellpfad = Ordner, der überwacht werden soll
