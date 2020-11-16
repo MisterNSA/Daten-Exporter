@@ -11,6 +11,7 @@ Verschiedene Ziele,
 **-Bei Fehlern, Fehlermeldungen per Mail versenden** 
 
 #Merkmale nach denen Geordnet werden kann
+
 **-Dateityp/ -endung**
 
 # Inhalt der config
