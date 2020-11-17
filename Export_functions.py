@@ -2,6 +2,14 @@
 # Creator: MisterNSA aka Tobias Dominik Weber
 # Date: 03.09.2020 Version 1.0.0
 
+import os
+from dotenv import load_dotenv
+
+# load the Enviremental Variables from the .env file
+load_dotenv()
+
+
+
 def isType(source, fileType):
     """check if the File matches the Type from the config"""
     # If the are no endings in specified, every ending is valid
@@ -34,19 +42,19 @@ def access(source):
             return ergebnis
 
 
-def mail(error_message, Address_sender, Password_sender, Address_receiver, Smtp_server):
+def mail(error_message):
     """sends a Mail with an error message to the user"""
     import smtplib
     # SMTP Server and Port
-    connectionObject = smtplib.SMTP(Smtp_server)
+    connectionObject = smtplib.SMTP(os.getenv("SMTP_SERVER"))
     # connect to SMTP
     connectionObject.ehlo()
     # Beginn Encryption
     connectionObject.starttls()
     # Login to your Account: USER | PW
-    connectionObject.login(Address_sender, Password_sender)
+    connectionObject.login(os.getenv("ADDRESS_SENDER"), os.getenv("PASSWORD_SENDER"))
     # From, To, Subject \n\n Text
-    connectionObject.sendmail(Address_sender, Address_receiver,
+    connectionObject.sendmail(os.getenv("ADDRESS_SENDER"), os.getenv("ADDRESS_RECEIVER") ,
                               f"Subject: An Error Occured\n\n Datum: {getTime()} \n {error_message} ")
     # Disconnect
     connectionObject.quit()
@@ -57,3 +65,4 @@ def getTime():
     # Extract Date and Time
     return now.strftime("%Y.%m.%d - %H:%M:%S")
 
+mail("Hilfe, es hat funktioniert")
