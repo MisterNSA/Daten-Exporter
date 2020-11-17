@@ -6,5 +6,5 @@ Zielpfad, falls Datei schon existiert = C:/Users/t.weber/Desktop/duplicates/
 [Timer]
 Wartezeit in Sekunden = 15
 [Datentypen]
-Endugen des Dateityps = .pdf, .jpg, .png
+Endungen des Dateityps = .pdf, .jpg, .png
 #Bitte alle Dateiendungen durch ein Komma gefolgt von einem Lehrzeichen trennen. Z.B.  .pdf, .jpg, .png

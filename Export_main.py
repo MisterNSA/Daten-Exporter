@@ -25,7 +25,10 @@ def checkSettings():
         Pfade_config = config["Pfade"]
         source : Path = Path(Pfade_config.get("Quellpfad"))
         destination : Path = Path(Pfade_config.get("Zielpfad"))
-        wrong_destination : Path = Path(Pfade_config.get("Zielpfad, falls falscher Dateityp"))
+        try:
+            wrong_destination : Path = Path(Pfade_config.get("Zielpfad, falls falscher Dateityp"))
+        except:
+            wrong_destination = destination
         duplicate_destination : Path = Path(Pfade_config.get("Zielpfad, falls Datei schon existiert"))
 
         # Parse the Timer
@@ -33,12 +36,11 @@ def checkSettings():
         wait = int(Timer_config.get("Wartezeit in Sekunden"))
 
         # Parse the Datatype
-        Datentyp_config = config["Datentypen"]
-        #fileType = Datentyp_config["Endug des Dateityps"]
-
-
-        fileType = Datentyp_config["Endugen des Dateityps"].split(", ")
-
+        try:
+            Datentyp_config = config["Datentypen"]
+            fileType = Datentyp_config["Endugen des Dateityps"].split(", ")
+        except:
+            fileType = []
 
     except:  # create new config.txt
         with open("exporter_config.txt", "w") as file:

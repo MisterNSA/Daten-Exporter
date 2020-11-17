@@ -4,6 +4,9 @@
 
 def isType(source, fileType):
     """check if the File matches the Type from the config"""
+    # If the are no endings in specified, every ending is valid
+    if len(fileType) > 1:
+        return True
     if any(ending in source for ending in fileType):
         return True
     else:
