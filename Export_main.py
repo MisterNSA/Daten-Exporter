@@ -25,10 +25,7 @@ def checkSettings():
         Pfade_config = config["Pfade"]
         source : Path = Path(Pfade_config.get("Quellpfad"))
         destination : Path = Path(Pfade_config.get("Zielpfad"))
-        try:
-            wrong_destination : Path = Path(Pfade_config.get("Zielpfad, falls falscher Dateityp"))
-        except:
-            wrong_destination = destination
+        wrong_destination : Path = Path(Pfade_config.get("Zielpfad, falls falscher Dateityp"))
         duplicate_destination : Path = Path(Pfade_config.get("Zielpfad, falls Datei schon existiert"))
 
         # Parse the Timer
@@ -36,11 +33,8 @@ def checkSettings():
         wait = int(Timer_config.get("Wartezeit in Sekunden"))
 
         # Parse the Datatype
-        try:
-            Datentyp_config = config["Datentypen"]
-            fileType = Datentyp_config["Endugen des Dateityps"].split(", ")
-        except:
-            fileType = []
+        Datentyp_config = config["Datentypen"]
+        fileType = Datentyp_config["Endungen des Dateityps"].split(", ")
 
     except:  # create new config.txt
         with open("exporter_config.txt", "w") as file:
@@ -52,7 +46,7 @@ Zielpfad, falls Datei schon existiert =
 [Timer]
 Wartezeit in Sekunden = 
 [Datentypen]
-Endugen des Dateityps = .pdf, .jpg, .png
+Endungen des Dateityps = .pdf, .jpg, .png
 #Bitte alle Dateiendungen durch ein Komma gefolgt von einem Lehrzeichen trennen. Z.B.  .pdf, .jpg, .png""")
         func.mail("Entweder war die config leer, ein Dateipfad korrupiert oder die config wurde inkorrekt geaendert. Es wurde eine neue config erstellt und der Dienst beendet.")
         sys.exit(0)
