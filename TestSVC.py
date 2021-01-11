@@ -11,9 +11,9 @@ from SMWinservice import SMWinservice
 
 
 class DatenExporterSVC(SMWinservice):
-    _svc_name_ = "DatenExporterSVC"
-    _svc_display_name_ = "Daten Exporter Service"
-    _svc_description_ = "Der Datenexporter überwacht einen Ordner auf eintreffende Dateien und verschiebt diese in ein Zielverzeichnis."
+    _svc_name_ = "TestPythonSVC"
+    _svc_display_name_ = "Test Python Service"
+    _svc_description_ = "Der Test Python Service testet einen Dienst mit pywin32."
 
     def start(self):
         self.isrunning = True
@@ -32,8 +32,8 @@ class DatenExporterSVC(SMWinservice):
             try:
                 random.seed()
                 x = random.randint(1, 1000000)
-
-                Path(f'c:{x}.txt').touch()
+                servicemanager.LogInfoMsg("Random ist :" + str(x))
+                Path(f'c:\{x}.txt').touch()
                 time.sleep(5)
             except:
                 servicemanager.LogErrorMsg("Unbehandelter Fehler" + sys.exc_info()[0])

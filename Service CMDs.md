@@ -20,11 +20,22 @@ den dazu notwendigenm Pfaden und Zgriffsberechtigungen verstanden ist, sollte au
 Zielsystem eine Einschränkung auf den Dienstausführenden Benutzer beschränken.  
 
 # Commands zum Umgang mit den Python Scripts 
+
+**- Administrator Console ! -**
+Entweder ein CMD als Administrator ausführen 
+oder Visual Studio Code als Administrator starten !
+
 **-Service installieren über Admin Konsole !-**
 python ExporterSVC.py install
 
 **-Service updaten über Admin Konsole !-**
 python ExporterSVC.py update
+
+**-Service entfernen über Admin Konsole !-**
+python ExporterSVC.py remove
+
+**-Service debuggen über Admin Konsole !-**
+python ExporterSVC.py debug
 
 **-Service Stoppen über Admin Konsole !-**
 net stop DatenExporterSVC
