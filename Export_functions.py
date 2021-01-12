@@ -5,8 +5,7 @@
 import os
 from dotenv import load_dotenv
 
-# load the Enviremental Variables from the .env file
-load_dotenv()
+
 
 
 
@@ -31,6 +30,12 @@ def Starts_with_Number(filename):
 def access(source):
     """check if the File exists and isnt open"""
     import os
+    # BUG: Tut nicht richtig, siehe TODO
+    # TODO: Die Funktion tut noch nicht genau das was sie tun soll !
+    # es wird nicht verhindert das z.B. eine geöffnete Access Datenbank, also eine geöffnete Datei
+    # eines anderen Prozesses, verschoben wird, und damit kommt es zu, Fehler !
+    # Das sollte diese Funktion eigentlich überprüfen !!!
+
     if os.path.exists(source):       
         try: # check if file is opened
             f = open(source, "a+")
@@ -65,4 +70,4 @@ def getTime():
     # Extract Date and Time
     return now.strftime("%Y.%m.%d - %H:%M:%S")
 
-mail("Hilfe, es hat funktioniert")
+#mail("Hilfe, es hat funktioniert")
