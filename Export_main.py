@@ -48,7 +48,6 @@ Wartezeit in Sekunden =
 [Datentypen]
 Endungen des Dateityps = .pdf, .jpg, .png
 #Bitte alle Dateiendungen durch ein Komma gefolgt von einem Lehrzeichen trennen. Z.B.  .pdf, .jpg, .png""")
-        func.mail("Entweder war die config leer, ein Dateipfad korrupiert oder die config wurde inkorrekt geaendert. Es wurde eine neue config erstellt und der Dienst beendet.")
         sys.exit(0)
 
     main(source, destination, wait, wrong_destination, fileType, duplicate_destination)
@@ -61,7 +60,9 @@ def main(source, destination, wait, wrong_destination, fileType, duplicate_desti
             # pathlib adds a String builder. Instead of "+", you can use "/"
             filesource = (source/filename)
             # check if the file exists and isnt opened
-            if func.access(filesource) == True:
+            try:
+                # It seems like this only works if the File is not opened, so this is a test
+                os.rename(filesource,filesource)
                 # check if the File has the right type and starts with a number
                 if func.isType(filename, fileType) and func.Starts_with_Number(filename):
                     # Check if file is a duplicate
@@ -75,25 +76,14 @@ def main(source, destination, wait, wrong_destination, fileType, duplicate_desti
                     else:
                         shutil.move(filesource, (wrong_destination/filename))
 
-            else:
+            except:
                 continue
-                
-    # If an error occured, send mail with error to user
+
+    
     except FileNotFoundError:
-        message = f"""Entweder wurde ein Pfad nicht richtig eingelesen oder eine Datei wurde waehrend der Bearbeitung verschoben, was aber unwahrscheinlich ist.\n
-Pfade:\n
-Quellpfad = {source}\n
-Zielpfad = {destination}\n
-Zielpfad, falls falscher Dateityp = {wrong_destination}\n
-Zielpfad, falls Datei schon existiert = {duplicate_destination}\n\n
-Wenn es Fehler in der Pfadangabe gibt, versuchen Sie bitte den Pfad in der config zu loeschen und per Hand neu einzutragen.\n
-Falls auch dies nichts bringt, loeschen sie bitte die config. Beim naechsten Programmstart wird automatisch eine neue config erstellt.
-"""
-        func.mail(message)
         sys.exit(0)
 
     except RuntimeError:
-        func.mail(RuntimeError)
         sys.exit(0)
 
     time.sleep(wait)  # Wait x seconds, befor a new loop
@@ -103,5 +93,4 @@ Falls auch dies nichts bringt, loeschen sie bitte die config. Beim naechsten Pro
 if __name__ == "__main__":
     checkSettings()
 
-# Whatever happens, that ends the programm, inform the user
-func.mail("The Programm stopped running for whatever reason!")
+

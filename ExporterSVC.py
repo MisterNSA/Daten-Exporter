@@ -132,7 +132,9 @@ class DatenExporterSVC(SMWinservice):
                     # pathlib adds a String builder. Instead of "+", you can use "/"
                     filesource = (self.source/filename)
                     # check if the file exists and isnt opened
-                    if func.access(filesource) == True:
+                    try: 
+                        # It seems like this only works if the File is not opened, so this is a test
+                        os.rename(filesource,filesource)
                         # check if the File has the right type and starts with a number
                         if func.isType(filename, self.fileType) and func.Starts_with_Number(filename):
                             # Check if file is a duplicate
@@ -146,7 +148,7 @@ class DatenExporterSVC(SMWinservice):
                             else:
                                 shutil.move(filesource, (self.wrong_destination/filename))
 
-                    else:
+                    except:
                         continue
                         
             # If an error occured, send mail with error to user
