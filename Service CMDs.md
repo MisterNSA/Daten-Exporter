@@ -1,18 +1,15 @@
 # Vorbemerkung zur Umgebung
 **- Python -**
-Notwendig ist eine saubere Python installation, insbesondere auf dem Produktiv Zielsystem.
-Am einfachsten wenn Python mit allen Abhängigkeiten für alle Benutzer installiert wird 
+Notwendig ist eine saubere Python Installation, insbesondere auf dem produktiv Zielsystem.
+Am einfachsten, wenn Python mit allen Abhängigkeiten für alle Benutzer installiert wird, 
 also in C:\Program Files\Python3xxx
 
-Der System Path variablen sollte C:\Program Files\Python3xxx 
+Der System Path Variablen sollte C:\Program Files\Python3xxx 
 und C:\Program Files\Python3xxxScripts hinzugefügt werden.
 
 # Abhängigkeiten
 
 **- Python 3.x - getestet mit 3.9 -**
-
-**-- dotenv -**
-pip install -U python-dotenv
 
 **- pywin32 -**
 
@@ -23,7 +20,7 @@ den Zugriff auf das Windows Betriebssystem hinzufügen.
 
 **- Sicherheit und Einschränkung -**
 Wenn der Umgang mit unterschiedlichen Python Konfigurationen, dem zugehörigen Umgang mit
-den dazu notwendigenm Pfaden und Zgriffsberechtigungen verstanden ist, sollte auf dem 
+den dazu notwendigenm Pfaden und Zugriffsberechtigungen verstanden ist, sollte auf dem 
 Zielsystem eine Einschränkung auf den Dienstausführenden Benutzer beschränken.  
 
 # Commands zum Umgang mit den Python Scripts 
@@ -67,11 +64,3 @@ Die Datei pywintypes3xx.dll wobei x für die Python Version steht wird nicht im 
 
 Die Datei wird beim Service in c:\windows\exporter_config.ini erwartet. 
 CWD ist hier nämlich nicht der Pfad des aktuellen Scripts !!!!
-
-# Known Bugs
-    # TODO: Die Funktion "access" tut noch nicht genau das was sie tun soll !
-    # es wird nicht verhindert das z.B. eine geöffnete Access Datenbank, also eine geöffnete Datei
-    # eines anderen Prozesses, verschoben wird, und damit kommt es zu, Fehler !
-    # Das sollte diese Funktion eigentlich überprüfen !!!
-
-    # Ergebnis der Service crashed
