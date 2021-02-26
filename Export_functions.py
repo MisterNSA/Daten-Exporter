@@ -6,9 +6,6 @@ import os
 from dotenv import load_dotenv
 
 
-
-
-
 def isType(source, fileType):
     """check if the File matches the Type from the config"""
     # If the are no endings in specified, every ending is valid
@@ -19,6 +16,7 @@ def isType(source, fileType):
     else:
         return False
 
+
 def Starts_with_Number(filename):
     """Check if the File starts with a number. Needed for assignment"""
     try:
@@ -26,6 +24,7 @@ def Starts_with_Number(filename):
         return True
     except:
         return False
+
 
 def access(source):
     """check if the File exists and isnt open"""
@@ -36,15 +35,12 @@ def access(source):
     # eines anderen Prozesses, verschoben wird, und damit kommt es zu, Fehler !
     # Das sollte diese Funktion eigentlich überprüfen !!!
 
-    if os.path.exists(source):       
-        try: # check if file is opened
-            f = open(source, "a+")
-            ergebnis = True
-            f.close()
+    if os.path.exists(source):
+        try:  # check if file is opened
+            os.rename(source, source)
+            return True
         except:
-            ergebnis = False
-        finally:
-            return ergebnis
+            return False
 
 
 def mail(error_message):
@@ -57,12 +53,14 @@ def mail(error_message):
     # Beginn Encryption
     connectionObject.starttls()
     # Login to your Account: USER | PW
-    connectionObject.login(os.getenv("ADDRESS_SENDER"), os.getenv("PASSWORD_SENDER"))
+    connectionObject.login(os.getenv("ADDRESS_SENDER"),
+                           os.getenv("PASSWORD_SENDER"))
     # From, To, Subject \n\n Text
-    connectionObject.sendmail(os.getenv("ADDRESS_SENDER"), os.getenv("ADDRESS_RECEIVER") ,
+    connectionObject.sendmail(os.getenv("ADDRESS_SENDER"), os.getenv("ADDRESS_RECEIVER"),
                               f"Subject: An Error Occured\n\n Datum: {getTime()} \n {error_message} ")
     # Disconnect
     connectionObject.quit()
+
 
 def getTime():
     from datetime import datetime
