@@ -60,6 +60,15 @@ Die Datei pywintypes3xx.dll wobei x für die Python Version steht wird nicht im 
  gefunden. Die DLLs aus C:\Program Files\Python3xx\Lib\site-packages\pywin32_system32\ in den Ordner
   C:\Program Files\Python3xx\Lib\site-packages\win32\  kopieren
 
+**- Error 1053: The service did not respond to the start or control request in a timely fashion"
+Der Dienst lässt sich zwar installieren, aber nicht starten und beenden. Im Debug-Modus funktioniert er allerdings.
+
+Die Datei pywintypes3xx.dll wobei x für die Python Version steht wird nicht im Verzeichnis
+ C:\Program Files\Python3xx\Lib\site-packages\win32\ 
+ gefunden. Die DLLs aus C:\Program Files\Python3xx\Lib\site-packages\pywin32_system32\ in den Ordner
+  C:\Program Files\Python3xx\Lib\site-packages\win32\  kopieren
+
+
 
 # Konfiguration
 
@@ -68,10 +77,4 @@ Die Datei pywintypes3xx.dll wobei x für die Python Version steht wird nicht im 
 Die Datei wird beim Service in c:\windows\exporter_config.ini erwartet. 
 CWD ist hier nämlich nicht der Pfad des aktuellen Scripts !!!!
 
-# Known Bugs
-    # TODO: Die Funktion "access" tut noch nicht genau das was sie tun soll !
-    # es wird nicht verhindert das z.B. eine geöffnete Access Datenbank, also eine geöffnete Datei
-    # eines anderen Prozesses, verschoben wird, und damit kommt es zu, Fehler !
-    # Das sollte diese Funktion eigentlich überprüfen !!!
 
-    # Ergebnis der Service crashed
