@@ -16,7 +16,7 @@ pip install -U python-dotenv
 
 **- pywin32 -**
 
-pip install -U piwin32
+pip install -U pywin32
 
 natürlich als Administrator (bzw. über eine Konsole mit Administrator Zugriff) 
 den Zugriff auf das Windows Betriebssystem hinzufügen. 
@@ -47,7 +47,7 @@ python ExporterSVC.py debug
 **-Service Stoppen über Admin Konsole !-**
 net stop DatenExporterSVC
 
-**-Service Stoppen  über Admin Konsole !-**
+**-Service Starten über Admin Konsole !-**
 net start DatenExporterSVC
 
 # Probleme
